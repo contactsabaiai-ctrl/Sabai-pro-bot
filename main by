@@ -1,0 +1,24 @@
+from telegram.ext import Application, CommandHandler, MessageHandler, filters
+BOT_TOKEN="8655226691:AAE2Rl8e_DFDM1LKGRpOpmR2316x1J9ofPk"
+def ans(t):
+ t=t.lower()
+ if "token" in t: return "📊 1B SABAI\n40% LP 400M ล็อค 07 Oct 2027\n30% Staking 300M 1SOL=1M\n15% Marketing 150M ล็อค 07 Dec 2028\n10% Team 100M\n5% Treasury 50M"
+ if "rug" in t or "ล็อค" in t: return "🔒 ปลอดภัย LP40%ล็อคถึง07Oct2027 Team10%ล็อคถึง07Oct2027 Marketing15%ล็อค26เดือนถึง07Dec2028"
+ return f"💰 {t} -> 1 SOL = 1,000,000 SABAI\nถาม /tokenomics /farm /locks ได้เลย"
+async def start(u,c): await u.message.reply_text("Sabai Pro Bot พร้อม 🤖\n/tokenomics\n/farm\n/locks")
+async def tok(u,c): await u.message.reply_text(ans("tokenomics"))
+async def locks(u,c): await u.message.reply_text(ans("rug"))
+async def farm(u,c):
+ s=c.args[0] if c.args else "1"
+ await u.message.reply_text(ans(f"{s} sol"))
+async def chat(u,c):
+ if not u.message.text.startswith("/"): await u.message.reply_text(ans(u.message.text))
+def main():
+ a=Application.builder().token(BOT_TOKEN).build()
+ a.add_handler(CommandHandler("start",start))
+ a.add_handler(CommandHandler("tokenomics",tok))
+ a.add_handler(CommandHandler("locks",locks))
+ a.add_handler(CommandHandler("farm",farm))
+ a.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND,chat))
+ a.run_polling()
+if __name__=="__main__": main()
